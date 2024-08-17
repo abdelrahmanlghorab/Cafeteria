@@ -1,0 +1,6 @@
+users(user_id,user_name,email,password,room,Ext,image,role_id)
+products(product_id,product_name,price,category_id,image,is_available)
+categories(category_id,category_name)
+orders(order_id,user_id,date,comment,total_price,status)
+order-items(id,order_id,product_id,quantity,price)
+role(id,permission(user,admin))
