@@ -1,0 +1,45 @@
+
+.container {
+    background-color: #ffe1c2;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    border-radius: 40px;
+    height: 500px;
+    width: 600px;
+    display: flex;
+    flex-direction: column;
+    gap: 90px;
+
+}
+
+h1 {
+    color: #5d5d5d;
+}
+
+.btn-primary {
+    background-color: #d4a373;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #ff5a48;
+}
+
+.btn-secondary {
+    background-color: #d89756;
+}
+
+.btn-secondary:hover {
+    background-color: #bbb;
+}
+
+input[type="email"], input[type="password"] {
+    border: 2px solid #ccc;
+    border-radius: 4px;
+}
+
+input[type="email"]:focus, input[type="password"]:focus {
+    border-color: #d4a373;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,0.075), 0 0 8px rgba(255, 111, 97, 0.6);
+}
