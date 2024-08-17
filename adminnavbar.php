@@ -14,7 +14,6 @@ try {
 }
 session_start();
 
-// Fetch user information from the database
 $user_id = isset($_SESSION['user_id']); 
  if(empty($user_id)){
     header("location:login.php");
@@ -65,7 +64,5 @@ $image = $user['image'] ?? 'default.jpg';
         </ul>
     </div>
 </nav>
-
-<!-- Bootstrap JS for dropdown functionality -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous"></script>
 
