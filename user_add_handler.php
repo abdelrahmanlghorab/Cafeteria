@@ -12,7 +12,38 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $room = $_POST['room'];
         $Ext = $_POST['Ext'];
         $role_id = $_POST['role_id'];
-
+        $errors=[];
+        $old_data=[];
+        if(empty($user_name)){
+            $errors['user_name']="User Name is required";
+            $old_data['user_name']=$user_name;
+        }
+        if(empty($email)){
+            $errors['email']="Email is required";
+            $old_data['email']=$email;
+        }
+        if(empty($password)){
+            $errors['password']="Password is required";
+            $old_data['password']=$password;
+        }
+        if(empty($room)){
+            $errors['room']="Room is required";
+            $old_data['room']=$room;
+        }
+        if(empty($Ext)){
+            $errors['Ext']="Ext is required";
+            $old_data['Ext']=$Ext;
+        }
+        if(empty($role_id)){
+            $errors['role_id']="Role is required";
+            $old_data['role_id']=$role_id;
+        }
+        if(!empty($errors)){
+            $errors=json_encode($errors);
+            $old_data=json_encode($old_data);
+            header("Location: user_add.php?errors=$errors&old_data=$old_data");
+            exit();
+        }
         
         $image = null;
         if (!empty($_FILES["image"]["name"])) {

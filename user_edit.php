@@ -107,9 +107,9 @@
             <div class="form-group">
                 <label for="image">User Image</label>
                 <input type="file" class="form-control" id="image" name="image">
-                <?php if (!empty($user['image'])): ?>
-                    <img src="path/to/your/images/folder/<?php echo htmlspecialchars($user['image']); ?>" alt="<?php echo htmlspecialchars($user['user_name']); ?>" width="100">
-                <?php endif; ?>
+                <?php //if (!empty($user['image'])): ?>
+                    <!--<img src="/images/<?php echo htmlspecialchars($user['image']); ?>" alt="<?php echo htmlspecialchars($user['user_name']); ?>" width="100">-->
+                <?php // endif; ?>
             </div>
             <div class="form-group">
                 <label for="role_id">Role</label>
@@ -138,68 +138,3 @@
     </div>
 </body>
 </html>
-
-<?php
-include 'db_connect.php';
-
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    $user_id = $_POST['user_id'];
-    $user_name = $_POST['user_name'];
-    $email = $_POST['email'];
-    $password = !empty($_POST['password']) ? password_hash($_POST['password'], PASSWORD_DEFAULT) : null;
-    $room = $_POST['room'];
-    $Ext = $_POST['Ext'];
-    $role_id = $_POST['role_id'];
-
-    $image = $_POST['current_image'];
-
-    if (!empty($_FILES["image"]["name"])) {
-        $target_dir = "path/to/your/images/folder/";
-        $target_file = $target_dir . basename($_FILES["image"]["name"]);
-        $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-
-        $check = getimagesize($_FILES["image"]["tmp_name"]);
-        if ($check === false) {
-            die("File is not an image.");
-        }
-
-        if (file_exists($target_file)) {
-            die("Sorry, file already exists.");
-        }
-
-        
-        if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
-            die("Sorry, only JPG, JPEG, & PNG files are allowed.");
-        }
-
-        
-        if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-           
-            if (!empty($_POST['current_image']) && file_exists($target_dir . $_POST['current_image'])) {
-                unlink($target_dir . $_POST['current_image']);
-            }
-            $image = basename($_FILES["image"]["name"]);
-        } else {
-            echo "Sorry, there was an error uploading your file.";
-            $image = $_POST['current_image']; 
-        }
-    }
-
-    $sql = "UPDATE users SET user_name = :user_name, email = :email, password = :password, room = :room, Ext = :Ext, image = :image, role_id = :role_id WHERE user_id = :user_id";
-    $stmt = $conn->prepare($sql);
-    $stmt->execute([
-        'user_name' => $user_name,
-        'email' => $email,
-        'password' => $password,
-        'room' => $room,
-        'Ext' => $Ext,
-        'image' => $image,
-        'role_id' => $role_id,
-        'user_id' => $user_id
-    ]);
-
-    
-    header("Location: users.php");
-    exit();
-}
-?>

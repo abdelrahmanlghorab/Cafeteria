@@ -16,8 +16,8 @@ if (isset($_GET['id'])) {
     $stmt->execute(['id' => $user_id]);
 
     
-    if ($user && file_exists("path/to/your/images/folder/" . $user['image'])) {
-        unlink("path/to/your/images/folder/" . $user['image']);
+    if ($user && file_exists("./images/" . $user['image'])) {
+        unlink("./images/" . $user['image']);
     }
 
     header("Location: users.php");

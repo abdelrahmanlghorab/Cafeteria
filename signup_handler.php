@@ -6,16 +6,46 @@ include 'db_connect.php';
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     try {
-        $user_id = $_POST['user_id'];
         $user_name = $_POST['user_name'];
         $email = $_POST['email'];
+        $password = $_POST['password'];
         $room = $_POST['room'];
         $Ext = $_POST['Ext'];
         $role_id = $_POST['role_id'];
-
-        $image = $_POST['current_image'];
-
+        $errors=[];
+        $old_data=[];
+        if(empty($user_name)){
+            $errors['user_name']="User Name is required";
+            $old_data['user_name']=$user_name;
+        }
+        if(empty($email)){
+            $errors['email']="Email is required";
+            $old_data['email']=$email;
+        }
+        if(empty($password)){
+            $errors['password']="Password is required";
+            $old_data['password']=$password;
+        }
+        if(empty($room)){
+            $errors['room']="Room is required";
+            $old_data['room']=$room;
+        }
+        if(empty($Ext)){
+            $errors['Ext']="Ext is required";
+            $old_data['Ext']=$Ext;
+        }
+        if(empty($role_id)){
+            $errors['role_id']="Role is required";
+            $old_data['role_id']=$role_id;
+        }
+        if(!empty($errors)){
+            $errors=json_encode($errors);
+            $old_data=json_encode($old_data);
+            header("Location: signup.php?errors=$errors&old_data=$old_data");
+            exit();
+        }
         
+        $image = null;
         if (!empty($_FILES["image"]["name"])) {
             $target_dir = "./images/";
             $target_file = $target_dir . basename($_FILES["image"]["name"]);
@@ -35,41 +65,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
 
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                if (!empty($_POST['current_image']) && file_exists($target_dir . $_POST['current_image'])) {
-                    unlink($target_dir . $_POST['current_image']);
-                }
                 $image = basename($_FILES["image"]["name"]);
             } else {
                 throw new Exception("Sorry, there was an error uploading your file.");
             }
         }
 
-        $sql = "UPDATE users SET user_name = :user_name, email = :email, room = :room, Ext = :Ext, image = :image, role_id = :role_id";
-        
-        if (!empty($_POST['password'])) {
-            $password = $_POST['password'];
-            $sql .= ", password = :password";
-        }
-        
-        $sql .= " WHERE user_id = :user_id";
-        
+        $sql = "INSERT INTO users (user_name, email, password, room, Ext, image, role_id) VALUES (:user_name, :email, :password, :room, :Ext, :image, :role_id)";
         $stmt = $conn->prepare($sql);
 
-        $params = [
+        $stmt->execute([
             'user_name' => $user_name,
             'email' => $email,
+            'password' => $password,
             'room' => $room,
             'Ext' => $Ext,
             'image' => $image,
-            'role_id' => $role_id,
-            'user_id' => $user_id
-        ];
-
-        if (!empty($_POST['password'])) {
-            $params['password'] = $_POST['password'];
-        }
-
-        $stmt->execute($params);
+            'role_id' => $role_id
+        ]);
 
         header("Location: users.php");
         exit();
