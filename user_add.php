@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <style>
         body {
-            background-color: #f5cdf5dc; 
+            background-color: #f5f5dc; 
             color: #4b2e2e; 
         }
         h2 {
