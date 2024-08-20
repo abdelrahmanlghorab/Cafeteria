@@ -15,7 +15,7 @@ try {
 session_start();
 
 $user_id = $_SESSION['user_id']; 
- if(empty($user_id)||$user_id!="2"){
+ if(empty($user_id)){
     header("location:login.php");
 }
 
@@ -27,6 +27,22 @@ $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
 $username = $user['user_name'] ?? 'Guest';
 $image = $user['image'] ?? 'default.jpg';
+$role_id=$user['role_id'];
+if($role_id==2){
+    $role_name="Admin";
+}
+elseif($role_id==1){
+    $role_name="User";
+}
+else{
+    $role_name="Guest";
+}
+if($role_name=="Admin"){
+    header("location:admin_order_add.php");
+}
+else{
+    header("location:add_user_order.php");
+}
 ?>
 
 <nav class="navbar navbar-expand-lg">
