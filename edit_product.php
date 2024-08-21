@@ -21,7 +21,7 @@ if (isset($_GET['id'])) {
             <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
             <style>
                 body {
-                    background-color: #f5f5dc; 
+                    background-color: #f7f3e9; 
                     color: #4b2e2e; 
                 }
                 h2 {

@@ -25,7 +25,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <style>
         body {
             font-family: 'Poppins', sans-serif;
-            background-color: #f4f7f6;
+            background-color: #f7f3e9;
             color: #333;
         }
         .navbar {
