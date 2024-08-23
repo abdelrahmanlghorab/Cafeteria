@@ -105,10 +105,13 @@ if (isset($_GET['message'])) {
 <nav class="navbar navbar-expand-lg" style="background-color: #8b6139 !important; width: 100%; top: 0; z-index: 1000;">
     <div class="container">
         <ul class="navbar-nav me-auto">
-            <a class="navbar-brand" href="#">
+            <li><a class="navbar-brand text-light" href="#">
                 <img src="./images/logo.png" alt="cafeteria" width="45">
                 Cafeteria
-            </a>
+            </a></li>
+            <li class="nav-item">
+                <a class="nav-link text-light" href="signup.php">Sign Up</a>
+            </li>
         </ul>
     </div>
 </nav>

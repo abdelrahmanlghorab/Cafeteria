@@ -22,9 +22,7 @@ if (isset($_GET['old_data'])) {
             font-family: 'Poppins', sans-serif;
             background-color: #f7f3e9;
             color: #4b2e2e;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: block;
             height: 100vh;
             margin: 0;
         }
@@ -35,6 +33,7 @@ if (isset($_GET['old_data'])) {
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 500px;
             width: 100%;
+            margin: 8% auto 0 auto;
         }
         h2 {
             color: #d4a373;
@@ -65,7 +64,21 @@ if (isset($_GET['old_data'])) {
         }
     </style>
 </head>
-<body> 
+<body>
+<nav class="navbar navbar-expand-lg" style="background-color: #8b6139 !important; width: 100%; top: 0; z-index: 1000;">
+    <div class="container">
+        <ul class="navbar-nav me-auto">
+            <li><a class="navbar-brand text-light" href="#">
+                <img src="./images/logo.png" alt="cafeteria" width="45">
+                Cafeteria
+            </a><li>
+                <li class="nav-item">
+                    <a class="nav-link text-light" href="login.php">LOGIN</a>
+                    </li>
+
+        </ul>
+    </div>
+</nav> 
     <div class="signup-container">
         <h2>Sign Up</h2>
         <form action="signup_handler.php" method="post" class="needs-validation" novalidate enctype="multipart/form-data">

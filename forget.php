@@ -15,19 +15,18 @@ if (isset($_GET['message'])) {
         body {
             background-color: #f7f3e9;
             font-family: 'Poppins', sans-serif;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            display: block;
             height: 100vh;
             margin: 0;
         }
-        .container {
+        .main-container {
             background-color: #fff;
             padding: 30px;
             border-radius: 8px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             max-width: 400px;
             width: 100%;
+            margin: 8% auto 0 auto;
         }
         h2 {
             color: #d4a373;
@@ -59,6 +58,22 @@ if (isset($_GET['message'])) {
     </style>
 </head>
 <body>
+<nav class="navbar navbar-expand-lg" style="background-color: #8b6139 !important; width: 100%; top: 0; z-index: 1000;">
+    <div class="container">
+        <ul class="navbar-nav me-auto">
+            <li><a class="navbar-brand text-light" href="#">
+                <img src="./images/logo.png" alt="cafeteria" width="45">
+                Cafeteria
+            </a></li>
+            <li class="nav-item">
+                <a class="nav-link text-light" href="signup.php">Sign Up</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" href="login.php">Login</a>
+            </li>
+        </ul>
+    </div>
+</nav>
 <?php if (isset($message)) : ?>
     <div class="alert alert-danger alert-dismissible fade show" role="alert">
         <?php echo htmlspecialchars($message); ?>
@@ -66,7 +81,7 @@ if (isset($_GET['message'])) {
     </div>
 <?php endif; ?>
 
-<div class="container">
+<div class="container main-container">
     <h2>Reset Password</h2>
     <form id="resetPasswordForm" action="forget_handler.php" method="POST" class="needs-validation" novalidate>
         <div class="mb-3">
