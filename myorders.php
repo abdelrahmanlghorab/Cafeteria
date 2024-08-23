@@ -6,6 +6,10 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
  if(empty($user_id)){
     header("location:login.php");
 }
+$role= $_SESSION['role'];
+if($role!=2){
+    header("location:add_user_order.php");
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
