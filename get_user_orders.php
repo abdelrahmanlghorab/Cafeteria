@@ -85,9 +85,9 @@ if (count($orders) > 0) {
         }
 
         echo "
-                </div> <!-- end of .order-details -->
+                </div>
                 {$show_cancel_button}
-            </div> <!-- end of .order-row -->
+            </div>
         ";
     }
 } else {

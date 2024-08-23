@@ -1,4 +1,7 @@
 <?php include 'db.php'; 
+if (isset($_GET['message'])) {
+    $message = $_GET['message'];
+}
 ?>
 
 <!DOCTYPE html>
@@ -9,6 +12,7 @@
     <title>Order Page</title>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="icon" href="./images/logo.png" type="image/x-icon" >
 
    
       <style>
@@ -79,7 +83,12 @@
         }
 
         .product img {
+            
             border-radius: 10px;
+            height: 300px !important;
+            width:100%;
+            object-fit: cover;
+       
         }
 
         .card-body.text-center h5 {
@@ -169,6 +178,12 @@
        
         <div class="col-md-6 mb-4">
             <div class="card shadow-lg">
+            <?php if (isset($message)) : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?php echo htmlspecialchars($message); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
                 <div class="card-body">
                     <h2 class="card-title">Place Your Order</h2>
                     <form method="POST" action="submit_order_admin.php">

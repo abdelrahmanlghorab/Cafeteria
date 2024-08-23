@@ -4,18 +4,56 @@ ini_set('display_errors', 1);
 
 include 'db_connect.php';
 
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
     try {
         $user_id = $_POST['user_id'];
-        $user_name = $_POST['user_name'];
-        $email = $_POST['email'];
-        $room = $_POST['room'];
-        $Ext = $_POST['Ext'];
+        $user_name = trim($_POST['user_name']);
+        $email = trim($_POST['email']);
+        $password = trim($_POST['password']);
+        $room = trim($_POST['room']);
+        $Ext = trim($_POST['Ext']);
         $role_id = $_POST['role_id'];
+        $current_image = $_POST['current_image'];
+        $image = $current_image;
 
-        $image = $_POST['current_image'];
-
+        $errors = [];
         
+
+        // Validation
+        if (empty($user_name)) {
+            $errors['user_name'] = 'User name is required.';
+        } 
+
+        if (empty($email)) {
+            $errors['email'] = 'Email is required.';
+        }
+
+        if (strlen($password) > 0 && strlen($password) < 6) {
+            $errors['password'] = 'Password must be at least 6 characters long.';
+        } elseif (strlen($password) > 0) {
+            $passwordHash = $password;
+        }
+
+        if (empty($room)) {
+            $errors['room'] = 'Room is required.';
+        } else {
+            $old_data['room'] = $room;
+        }
+
+        if (empty($Ext)) {
+            $errors['Ext'] = 'Ext is required.';
+        } 
+
+        if (empty($role_id)) {
+            $errors['role_id'] = 'Role is required.';
+        } 
+        if (!empty($errors)) {
+            $errors = json_encode($errors);
+            header("Location: user_edit.php?id=$user_id&errors=$errors");
+            exit();
+        }
+
+        // Handle image upload
         if (!empty($_FILES["image"]["name"])) {
             $target_dir = "./images/";
             $target_file = $target_dir . basename($_FILES["image"]["name"]);
@@ -30,13 +68,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 throw new Exception("Sorry, file already exists.");
             }
 
-            if ($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg") {
+            if (!in_array($imageFileType, ["jpg", "jpeg", "png"])) {
                 throw new Exception("Sorry, only JPG, JPEG, & PNG files are allowed.");
             }
 
             if (move_uploaded_file($_FILES["image"]["tmp_name"], $target_file)) {
-                if (!empty($_POST['current_image']) && file_exists($target_dir . $_POST['current_image'])) {
-                    unlink($target_dir . $_POST['current_image']);
+                // Remove old image if exists
+                if (!empty($current_image) && file_exists($target_dir . $current_image)) {
+                    unlink($target_dir . $current_image);
                 }
                 $image = basename($_FILES["image"]["name"]);
             } else {
@@ -44,10 +83,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             }
         }
 
+        // Prepare SQL query
         $sql = "UPDATE users SET user_name = :user_name, email = :email, room = :room, Ext = :Ext, image = :image, role_id = :role_id";
         
-        if (!empty($_POST['password'])) {
-            $password = $_POST['password'];
+        // Add password field if it's set
+        if (!empty($passwordHash)) {
             $sql .= ", password = :password";
         }
         
@@ -65,8 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'user_id' => $user_id
         ];
 
-        if (!empty($_POST['password'])) {
-            $params['password'] = $_POST['password'];
+        if (!empty($passwordHash)) {
+            $params['password'] = $passwordHash;
         }
 
         $stmt->execute($params);
@@ -75,9 +115,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         exit();
 
     } catch (Exception $e) {
-        echo "Error: " . $e->getMessage();
+        echo "Error: " . htmlspecialchars($e->getMessage());
     }
-} else {
-    echo "Invalid request.";
-}
+
 ?>

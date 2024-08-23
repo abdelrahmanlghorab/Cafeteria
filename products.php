@@ -15,6 +15,7 @@ $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Products</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="icon" href="./images/logo.png" type="image/x-icon" >
     <style>
         body {
             font-family: 'Poppins', sans-serif;

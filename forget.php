@@ -10,44 +10,82 @@ if (isset($_GET['message'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reset Password</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="./images/logo.png" type="image/x-icon" >
     <style>
-    	body{
-    		background-color:#f7f3e9;
-    	}
+        body {
+            background-color: #f7f3e9;
+            font-family: 'Poppins', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
         .container {
-            max-width: 500px;
-            margin-top: 100px;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+        }
+        h2 {
+            color: #d4a373;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .form-control {
+            border-radius: 20px;
+            border: 1px solid #d4a373;
+            background-color: #f5f5dc;
+            color: #4b2e2e;
+        }
+        .form-label {
+            color: #4b2e2e;
+            font-weight: bold;
+        }
+        .btn-primary {
+            background-color: #d4a373;
+            border-color: #d4a373;
+            border-radius: 20px;
+        }
+        .btn-primary:hover {
+            background-color: #c98d58;
+            border-color: #c98d58;
+        }
+        .alert {
+            border-radius: 20px;
         }
     </style>
 </head>
 <body>
-<?php if($message){ echo "<div class='alert alert-danger alert-dismissible fade show' role='alert'>
-    $message
-    <button type='button' class='btn-close' data-bs-dismiss='alert' aria-label='Close'></button>
+<?php if (isset($message)) : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?php echo htmlspecialchars($message); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
     </div>
-        ";}
-        ?>
+<?php endif; ?>
+
 <div class="container">
-    <h2 class="text-center">Reset Password</h2>
-    <form id="resetPasswordForm" action="forget_handler.php" method="POST">
-    <div class="mb-3">
-            <label for="text" class="form-label">User Name</label>
-            <input type="text" class="form-control" id="text" name="user_name" required>
+    <h2>Reset Password</h2>
+    <form id="resetPasswordForm" action="forget_handler.php" method="POST" class="needs-validation" novalidate>
+        <div class="mb-3">
+            <label for="user_name" class="form-label">User Name</label>
+            <input type="text" class="form-control" id="user_name" name="user_name" required>
             <div class="invalid-feedback">
-                Password must be at least 8 characters long.
+                Please enter your user name.
             </div>
-    </div>
+        </div>
         <div class="mb-3">
             <label for="password" class="form-label">New Password</label>
-            <input type="password" class="form-control" id="password" name="password" required >
+            <input type="password" class="form-control" id="password" name="password" required minlength="8">
             <div class="invalid-feedback">
                 Password must be at least 8 characters long.
             </div>
         </div>
         <div class="mb-3">
             <label for="confirmPassword" class="form-label">Confirm Password</label>
-            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required >
+            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" required minlength="8">
             <div class="invalid-feedback">
                 Passwords do not match.
             </div>
@@ -58,15 +96,28 @@ if (isset($_GET['message'])) {
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script>
-    document.getElementById('resetPasswordForm').addEventListener('submit', function(event) {
-        const password = document.getElementById('password').value;
-        const confirmPassword = document.getElementById('confirmPassword').value;
+    (function () {
+        'use strict'
+        const form = document.getElementById('resetPasswordForm');
 
-        if (password !== confirmPassword) {
-            event.preventDefault();
-            document.getElementById('confirmPassword').classList.add('is-invalid');
-        }
-    });
+        form.addEventListener('submit', function (event) {
+            const password = document.getElementById('password').value;
+            const confirmPassword = document.getElementById('confirmPassword').value;
+
+            if (!form.checkValidity()) {
+                event.preventDefault();
+                event.stopPropagation();
+            }
+
+            if (password !== confirmPassword) {
+                event.preventDefault();
+                event.stopPropagation();
+                document.getElementById('confirmPassword').classList.add('is-invalid');
+            }
+
+            form.classList.add('was-validated');
+        }, false);
+    })();
 </script>
 
 </body>

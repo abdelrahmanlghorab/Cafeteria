@@ -16,29 +16,35 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $old_data=[];
         if(empty($user_name)){
             $errors['user_name']="User Name is required";
+            
+        }else{
             $old_data['user_name']=$user_name;
         }
         if(empty($email)){
             $errors['email']="Email is required";
+        }else{
             $old_data['email']=$email;
         }
         if(empty($password)){
             $errors['password']="Password is required";
+        }
+        if (strlen($password) < 8) {
+            $errors['password']="Password must be at least 8 characters";
             $old_data['password']=$password;
         }
+        
         if(empty($room)){
             $errors['room']="Room is required";
+        }else{
             $old_data['room']=$room;
         }
         if(empty($Ext)){
             $errors['Ext']="Ext is required";
+        }else{
             $old_data['Ext']=$Ext;
         }
-        if(empty($role_id)){
-            $errors['role_id']="Role is required";
-            $old_data['role_id']=$role_id;
-        }
         if(!empty($errors)){
+            
             $errors=json_encode($errors);
             $old_data=json_encode($old_data);
             header("Location: user_add.php?errors=$errors&old_data=$old_data");

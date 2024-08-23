@@ -8,8 +8,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $comment = $_POST['comment'];
         $total_price = $_POST['total_price'];
         $order_status = 'pending';
-
-        
+        $products = $_POST['products'];
+        if(empty($products)){
+            header("Location: admin_order_add.php?message=No Products Selected");
+            exit();
+        }
         $pdo->beginTransaction();
 
        

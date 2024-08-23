@@ -1,4 +1,8 @@
-<?php include 'db.php'; ?>
+<?php include 'db.php'; 
+if (isset($_GET['message'])) {
+    $message = $_GET['message'];
+}
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,7 +12,7 @@
     <title>Order Page</title>
     
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-
+    <link rel="icon" href="./images/logo.png" type="image/x-icon" >
     
     <style>
         body {
@@ -80,8 +84,8 @@
         .product img {
             
             border-radius: 10px;
-            height: 100%;
-            width: 100%;
+            height: 300px !important;
+            width:100%;
             object-fit: cover;
        
         }
@@ -173,8 +177,15 @@
    
         <div class="col-md-6 mb-4">
             <div class="card shadow-lg">
+            <?php if (isset($message)) : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?php echo htmlspecialchars($message); ?>
+        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+    </div>
+<?php endif; ?>
                 <div class="card-body">
                     <h2 class="card-title">Place Your Order</h2>
+
                     <form method="POST" action="submit_order_user.php?user_id=<?php echo $user_id; ?>">
                         <div id="order-items" class="mb-3">
                             

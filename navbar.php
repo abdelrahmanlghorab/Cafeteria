@@ -19,6 +19,10 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
  if(empty($user_id)){
     header("location:login.php");
 }
+$role= $_SESSION['role'];
+if($role!=1){
+    header("location:add_user_order.php");
+}
 
 $query = "SELECT user_name, image FROM users WHERE user_id = :user_id";
 $stmt = $con->prepare($query);
@@ -30,11 +34,14 @@ $username = $user['user_name'] ?? 'Guest';
 $image = $user['image'] ?? 'default.jpg';
 ?>
 
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg" style="background-color: #8b6139 !important;">
     <div class="container">
         <ul class="navbar-nav me-auto">
             <li class="nav-item">
-                <a class="nav-link" href="add_user_order.php">Home</a>
+            <a class="navbar-brand" href="add_user_order.php" style="color: #fff; font-weight: bold;">
+                <img src="./images/logo.png" alt="cafeteria" width="45">
+                Cafeteria
+            </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link active" href="myorders.php">My Orders</a>

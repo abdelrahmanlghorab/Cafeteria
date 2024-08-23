@@ -20,6 +20,7 @@ $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
     <!-- Font Awesome -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
     <!-- Custom CSS -->
+    <link rel="icon" href="./images/logo.png" type="image/x-icon" >
     <style>
         body {
             font-family: 'Poppins', sans-serif;

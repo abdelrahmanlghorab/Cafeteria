@@ -1,32 +1,116 @@
-<?php
-require"db.php";
-$today = date('Y-m-d');
-$stmt = $pdo->prepare("
-    SELECT o.order_id, o.date, o.total_price,o.status, u.user_name, u.room, u.Ext, 
-           GROUP_CONCAT(CONCAT(p.product_name, ' x', oi.quantity, ' @ ', oi.price, ' LE') SEPARATOR ', ') AS items
-    FROM orders o
-    JOIN users u ON o.user_id = u.user_id
-    JOIN order_items oi ON o.order_id = oi.order_id
-    JOIN products p ON oi.product_id = p.product_id
-    WHERE DATE(o.date) = :today
-    GROUP BY o.order_id
-");
-$stmt->execute(['today' => $today]);
-$orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
-?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Today's Orders</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cafeteria Admin - Checks</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="icon" href="./images/logo.png" type="image/x-icon" >
     <style>
         body {
             font-family: 'Poppins', sans-serif;
             background-color: #f7f3e9;
             color: #333;
+        }
+        h1 {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+        .card-header {
+            background-color: #d4a373;
+            font-weight: bold;
+            font-size: 1.25rem;
+        }
+        .card-body {
+            background-color: #ffffff;
+            padding: 30px;
+        }
+        .btn-primary {
+            background-color: #d4a373;
+            border-color: #d4a373;
+            font-weight: 600;
+        }
+        .btn-primary:hover {
+            background-color: #c98d58;
+            border-color: #c98d58;
+        }
+        .form-label {
+            font-weight: 500;
+            color: #6b705c;
+        }
+        .user-orders {
+            cursor: pointer;
+            color: #333;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s ease;
+            background-color : #d4a373;
+        }
+        .user-orders:hover {
+            background-color: #ffe2c6;
+        }
+        .order-details {
+            display: none;
+            padding: 10px 20px;
+            background-color: #f8f9fa;
+            border-bottom: 1px solid #ddd;
+        }
+        .order-items {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+        }
+        .item {
+            text-align: center;
+            border: 1px solid #ddd;
+            padding: 10px;
+            border-radius: 8px;
+            background-color: #f8f9fa;
+            margin-bottom: 10px;
+        }
+        .item img {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 10px;
+        }
+        .item:hover {
+            background-color: #f1ece4;
+        }
+        .order{
+            cursor: pointer;
+            color: #333;
+            font-weight: 600;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+            transition: background-color 0.3s ease;
+            background-color : #f7f3e9;
+            display: flex;
+            justify-content: space-between;
+            
+        }
+        .order:hover {
+            background-color: #ffe2c6;
+        }
+        .order-items {
+            display: none;
+            margin-top: 10px;
+            padding: 10px 20px;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+
         }
         .navbar {
             background-color: #d4a373;
@@ -52,118 +136,77 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
             font-weight: bold;
             color: #fff;
         }
-        .container {
-            margin-top: 20px;
-        }
-        h1 {
-            font-size: 2rem;
-            margin-bottom: 20px;
-            color: #d4a373;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 30px;
-        }
-        table th, table td {
-            padding: 12px;
-            text-align: left;
-            border: 1px solid #ddd;
-        }
-        table th {
-            background-color: #f9f9f9;
-            color: #555;
-        }
-        table tr:nth-child(even) {
-            background-color: #f2f2f2;
-        }
-        .btn-deliver {
-            color: #fff;
-            background-color: #8b4513;
-            border-color: #8b4513;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            text-decoration: none;
-        }
-        .btn-deliver:hover {
-            background-color: #5a2d0c;
-            border-color: #5a2d0c;
-        }
-        .item-row {
-            background-color: #ffffff;
-        }
-        .item-image {
-            width: 80px;
-            height: 80px;
-            object-fit: cover;
-            border-radius: 5px;
-        }
-        .item-details {
-            padding: 10px;
-        }
     </style>
 </head>
 <body>
+    <!-- Navbar -->
     <?php include 'adminnavbar.php'; ?>
     <div class="container">
-        <h1>Today's Orders</h1>
-        <table>
-            <thead>
-                <tr>
-                    <th>Order Date</th>
-                    <th>Name</th>
-                    <th>Room</th>
-                    <th>Extension</th>
-                    <th>Total Price</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php
-                foreach ($orders as $order): ?>
-                    <tr <?php if ($order['status'] === 'completed') echo 'style="display:none;"'; ?> >
-                        <td><?php echo date('Y-m-d H:i:s', strtotime($order['date'])); ?></td>
-                        <td><?php echo htmlspecialchars($order['user_name']); ?></td>
-                        <td><?php echo htmlspecialchars($order['room']); ?></td>
-                        <td><?php echo htmlspecialchars($order['Ext']); ?></td>
-                        <td><?php echo htmlspecialchars($order['total_price']); ?> LE</td>
-                        <td><a href="deliver_order.php?order_id=<?php echo $order['order_id']; ?>"class="btn-deliver">Deliver</a></td>
-                    </tr>
-                    <tr class="item-row" <?php if ($order['status'] === 'completed') echo 'style="display:none;"'; ?>>
-                        <td colspan="6">
-                            <div class="item-details">
-                                <table>
-                                    <?php
-                                    $itemStmt = $pdo->prepare("
-                                        SELECT p.product_name, p.price, p.image, oi.quantity 
-                                        FROM order_items oi
-                                        JOIN products p ON oi.product_id = p.product_id
-                                        WHERE oi.order_id = :order_id
-                                    ");
-                                    $itemStmt->execute(['order_id' => $order['order_id']]);
-                                    $items = $itemStmt->fetchAll(PDO::FETCH_ASSOC);
-                                    ?>
-                                    <?php foreach ($items as $item): ?>
-                                        <tr>
-                                            <td>
-                                                <img src="images/<?php echo htmlspecialchars($item['image']); ?>" alt="<?php echo htmlspecialchars($item['product_name']); ?>" class="item-image">
-                                            </td>
-                                            <td>
-                                                <?php echo htmlspecialchars($item['product_name']); ?> x<?php echo $item['quantity']; ?>
-                                            </td>
-                                            <td>
-                                                <?php echo htmlspecialchars($item['price']); ?> LE
-                                            </td>
-                                        </tr>
-                                    <?php endforeach; ?>
-                                </table>
-                            </div>
-                        </td>
-                    </tr>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
+        <h1>Checks</h1>
+        <div class="card shadow-sm mb-4">
+            <div class="card-header">
+                Filter Orders
+            </div>
+            <div class="card-body">
+                <form method="GET" id="filterForm" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="date_from" class="form-label">Date from:</label>
+                        <input type="date" name="date_from" id="date_from" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="date_to" class="form-label">Date to:</label>
+                        <input type="date" name="date_to" id="date_to" class="form-control">
+                    </div>
+                    <div class="col-md-4">
+                        <label for="user" class="form-label">User:</label>
+                        <select name="user" id="user" class="form-select">
+                            <option value="">All Users</option>
+                            <!-- Populate users from the database -->
+                            <?php
+                            include 'db_connect.php';
+                            $users_query = "SELECT user_id, user_name FROM users";
+                            $users_result = $conn->query($users_query);
+                            while ($user = $users_result->fetch(PDO::FETCH_ASSOC)) {
+                                echo "<option value='{$user['user_id']}'>{$user['user_name']}</option>";
+                            }
+                            ?>
+                        </select>
+                    </div>
+                    <div class="col-12">
+                        <button type="submit" class="btn btn-primary">Filter</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div id="orderData">
+            <!-- This section will be populated with PHP -->
+            <?php include 'get_orders.php'; ?>
+        </div>
     </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        $(document).ready(function() {
+            $(document).on('click', '.user-orders', function() {
+        $(this).next('.order-details').slideToggle();
+    });
+
+    // Toggle order items when clicking on an order
+    $(document).on('click', '.table-row', function() {
+        $(this).next('.order-items').slideToggle();
+    });
+    $(document).on('click', '.order', function() {
+    // Slide up any currently visible .order-items
+    $('.order-items').not($(this).find('.order-items')).slideUp();
+    // Toggle the .order-items of the clicked .order
+    $(this).find('.order-items').slideToggle();
+});
+
+        });
+    </script>
 </body>
 </html>

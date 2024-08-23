@@ -8,10 +8,12 @@ if (isset($_GET['id']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
     $category_id = $_POST['category_id'];
     $is_available = isset($_POST['is_available']) ? 1 : 0; 
     $errors = [];
-    
+    $old_data = [];
     
     if (empty($product_name)) {
         $errors['product_name'] = 'Product name is required';
+    }else{
+        $old_data = $product_name;
     }
 
     
@@ -19,16 +21,20 @@ if (isset($_GET['id']) && $_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['price'] = 'Price is required';
     } elseif (!is_numeric($price) || $price <= 0) {
         $errors['price'] = 'Price must be a positive number';
+    }else{
+        $old_data = $price;
     }
 
     
     if (empty($category_id)) {
         $errors['category_id'] = 'Category is required';
+    }else{
+        $old_data = $category_id;
     }
 
         if (!empty($errors)) {
     
-        header('Location: edit_product.php?id=' . urlencode($product_id) . '&errors=' . urlencode(json_encode($errors)) . '&old_data=' . urlencode(json_encode([
+        header("Location: edit_product.php?id=$product_id&" . urlencode($product_id) . '&errors=' . urlencode(json_encode($errors)) . '&old_data=' . urlencode(json_encode([
             'product_name' => $product_name,
             'price' => $price,
             'category_id' => $category_id,

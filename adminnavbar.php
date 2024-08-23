@@ -34,11 +34,14 @@ $image = $user['image'] ?? 'default.jpg';
 $role_id=$user['role_id'];
 ?>
 
-<nav class="navbar navbar-expand-lg">
+<nav class="navbar navbar-expand-lg" style="background-color: #8b6139 !important;">
     <div class="container">
         <ul class="navbar-nav me-auto">
             <li class="nav-item">
-                <a class="nav-link" href="admin_order_add.php">Home</a>
+            <a class="navbar-brand" href="admin_order_add.php" style="color: #fff; font-weight: bold;">
+                <img src="./images/logo.png" alt="cafeteria" width="45">
+                Cafeteria
+            </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="products.php">Products</a>
@@ -47,10 +50,13 @@ $role_id=$user['role_id'];
                 <a class="nav-link" href="users.php">Users</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="orders_filter.php">Order Filter</a>
+                <a class="nav-link" href="today_orders.php">Today's orders</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="check.php">Checks</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="all_orders.php">all orders</a>
             </li>
         </ul>
         <ul class="navbar-nav ms-auto">

@@ -32,8 +32,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             exit();
         } else {
             
-            $errors['login'] = "Invalid email or password.";
-    header('Location: login.php?errors=' . json_encode($errors));
+            $message = "Invalid email or password.";
+    header('Location: login.php?errors=' . json_encode($message));
         }
     } catch(PDOException $e) {
         echo "Error: " . $e->getMessage();

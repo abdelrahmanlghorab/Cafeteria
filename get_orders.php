@@ -78,7 +78,7 @@ foreach ($results as $row) {
 
     foreach ($order_results as $order_row) {
         echo "
-            <div>
+            <div class='order'>
                 <span>Order Date: {$order_row['date']}</span> - Amount: {$order_row['total_price']}
                 <div class='order-items'>
         ";

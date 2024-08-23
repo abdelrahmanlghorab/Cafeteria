@@ -7,6 +7,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $room = $_POST['room'];
     $total_price = 0;
     $products = $_POST['products'];
+    if(empty($products)){
+        header("Location: add_user_order.php?message=No Products Selected");
+        exit();
+    }
 
     try {
         
