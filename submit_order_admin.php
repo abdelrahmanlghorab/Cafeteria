@@ -51,7 +51,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $pdo->commit();
 
         
-        header("Location: check.php");
+        header("Location: today_orders.php");
         exit();
     } catch (Exception $e) {
         

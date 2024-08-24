@@ -2,7 +2,7 @@
 require"db.php";
 $today = date('Y-m-d');
 $stmt = $pdo->prepare("
-    SELECT o.order_id, o.date, o.total_price,o.status, u.user_name, u.room, u.Ext, 
+    SELECT o.order_id, o.date, o.total_price,o.status,o.comment, u.user_name, u.room, u.Ext, 
            GROUP_CONCAT(CONCAT(p.product_name, ' x', oi.quantity, ' @ ', oi.price, ' LE') SEPARATOR ', ') AS items
     FROM orders o
     JOIN users u ON o.user_id = u.user_id
@@ -126,6 +126,7 @@ table tr:nth-child(odd) {
                     <th>Room</th>
                     <th>Extension</th>
                     <th>Total Price</th>
+                    <th>Comment</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -138,10 +139,11 @@ table tr:nth-child(odd) {
                         <td><?php echo htmlspecialchars($order['room']); ?></td>
                         <td><?php echo htmlspecialchars($order['Ext']); ?></td>
                         <td><?php echo htmlspecialchars($order['total_price']); ?> LE</td>
+                        <td><?php echo htmlspecialchars($order['comment']); ?></td>
                         <td><a href="deliver_order.php?order_id=<?php echo $order['order_id']; ?>"class="btn-deliver">Deliver</a></td>
                     </tr>
                     <tr class="item-row" <?php if ($order['status'] === 'completed'||$order['status'] === 'cancelled') echo 'style="display:none;"'; ?>>
-                        <td colspan="6">
+                        <td colspan="7">
                             <div class="item-details">
                                 <table>
                                     <?php
