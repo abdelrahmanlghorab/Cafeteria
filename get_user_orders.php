@@ -7,7 +7,7 @@ $date_to = isset($_GET['date_to']) ? $_GET['date_to'] : '';
 $user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : ''; 
 
 
-$query = "SELECT o.order_id, o.date, o.total_price, o.status
+$query = "SELECT o.order_id, o.date, o.total_price, o.status,o.comment
           FROM orders o
           WHERE o.user_id = :user_id";
 
@@ -57,6 +57,7 @@ if (count($orders) > 0) {
                 </div>
                 <p>Date: {$order['date']}</p>
                 <p>Total Price: {$order['total_price']} LE</p>
+                <p>Comment: {$order['comment']}</p>
                 <p class='{$status_class}'>Status: " . ucfirst($order['status']) . "</p>
                 <div class='order-details' style='display: none;'>
         ";

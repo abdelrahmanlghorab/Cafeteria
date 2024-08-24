@@ -90,7 +90,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             'role_id' => $role_id
         ]);
 
-        header("Location: users.php");
+        header("Location: add_user_order.php");
         exit();
 
     } catch (Exception $e) {
