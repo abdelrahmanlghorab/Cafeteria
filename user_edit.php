@@ -146,8 +146,8 @@ if (isset($_GET['old_data'])) {
                 <div class="form-group">
                     <label for="role_id">Role</label>
                     <select class="form-control" id="role_id" name="role_id">
-                        <option value="1" <?php echo $data['role_id'] == 1 ? 'selected' : ''; ?>>Admin</option>
-                        <option value="2" <?php echo $data['role_id'] == 2 ? 'selected' : ''; ?>>User</option>
+                        <option value="1" <?php echo $data['role_id'] == 2 ? 'selected' : ''; ?>>Admin</option>
+                        <option value="2" <?php echo $data['role_id'] == 1 ? 'selected' : ''; ?>>User</option>
                     </select>
                     <span class="text-danger"><?php echo isset($errors['role_id']) ? htmlspecialchars($errors['role_id']) : ''; ?></span>
                 </div>
