@@ -133,7 +133,7 @@ try {
             <div class="container mt-5">
                 <h2>Edit Product</h2>
                 <div class="form-container">
-                    <form action="edit_product_handler.php?id=<?php echo urlencode($product_id); ?>" method="post">
+                    <form action="edit_product_handler.php?id=<?php echo urlencode($product_id); ?>" method="post" enctype="multipart/form-data">
                         <div class="form-group">
                             <label for="product_name">Product Name</label>
                             <input type="text" class="form-control" id="product_name" name="product_name" value="<?php echo htmlspecialchars(isset($old_data['product_name']) ? $old_data['product_name'] : $product['product_name']); ?>" >
@@ -146,6 +146,14 @@ try {
                             <input type="number" class="form-control" id="price" name="price" value="<?php echo htmlspecialchars(isset($old_data['price']) ? $old_data['price'] : $product['price']); ?>" >
                             <?php if (isset($errors['price'])): ?>
                                 <span class="text-danger"><?php echo htmlspecialchars($errors['price']); ?></span>
+                            <?php endif; ?>
+                        </div>
+                        <div class="form-group">
+                            <label for="image">Image</label>
+                            <input type="file" class="form-control" id="image" name="image" >
+                            <img src="./images/<?php echo htmlspecialchars(isset($old_data['image']) ? $old_data['image'] : $product['image']); ?>" alt="Product Image" style="max-width: 100px; max-height: 100px; margin-top: 10px;">
+                            <?php if (isset($errors['image'])): ?>
+                                <span class="text-danger"><?php echo htmlspecialchars($errors['image']); ?></span>
                             <?php endif; ?>
                         </div>
                         <div class="form-group">

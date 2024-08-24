@@ -56,7 +56,6 @@ if (isset($_GET['message'])) {
         }
 
         .navbar {
-            background-color: #d4a373;
             color: #fff;
         }
 

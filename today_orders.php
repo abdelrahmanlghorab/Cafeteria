@@ -132,7 +132,7 @@ table tr:nth-child(odd) {
             <tbody>
                 <?php
                 foreach ($orders as $order): ?>
-                    <tr <?php if ($order['status'] === 'completed') echo 'style="display:none;"'; ?> >
+                    <tr <?php if ($order['status'] === 'completed'||$order['status'] === 'cancelled') echo 'style="display:none;"'; ?> >
                         <td><?php echo date('Y-m-d H:i:s', strtotime($order['date'])); ?></td>
                         <td><?php echo htmlspecialchars($order['user_name']); ?></td>
                         <td><?php echo htmlspecialchars($order['room']); ?></td>
@@ -140,7 +140,7 @@ table tr:nth-child(odd) {
                         <td><?php echo htmlspecialchars($order['total_price']); ?> LE</td>
                         <td><a href="deliver_order.php?order_id=<?php echo $order['order_id']; ?>"class="btn-deliver">Deliver</a></td>
                     </tr>
-                    <tr class="item-row" <?php if ($order['status'] === 'completed') echo 'style="display:none;"'; ?>>
+                    <tr class="item-row" <?php if ($order['status'] === 'completed'||$order['status'] === 'cancelled') echo 'style="display:none;"'; ?>>
                         <td colspan="6">
                             <div class="item-details">
                                 <table>
