@@ -14,11 +14,11 @@ try {
 }
 session_start();
 
-$user_id = $_SESSION['user_id'];
+$user_id = $_SESSION['user_id']?$_SESSION['user_id']:'';
  if(empty($user_id)){
     header("location:login.php");
 }
-$role= $_SESSION['role'];
+$role= $_SESSION['role']?$_SESSION['role']:'';
 if($role!=2){
     header("location:add_user_order.php");
 }

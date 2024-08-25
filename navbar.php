@@ -1,5 +1,20 @@
 <?php
 
+session_start();
+
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
+}
+
+$user_id = $_SESSION['user_id'];
+$role = $_SESSION['role'] ?? '';
+
+if ($role != 1) {
+    header("Location: admin_order_add.php");
+    exit();
+}
+
 $servername = "localhost";
 $username = "root";
 $password = "123456";
@@ -13,16 +28,7 @@ try {
     exit();
 }
 
-session_start();
 
-$user_id = isset($_SESSION['user_id']) ? $_SESSION['user_id'] : '';
- if(empty($user_id)){
-    header("location:login.php");
-}
-$role= $_SESSION['role'];
-if($role!=1){
-    header("location:add_user_order.php");
-}
 
 $query = "SELECT user_name, image FROM users WHERE user_id = :user_id";
 $stmt = $con->prepare($query);

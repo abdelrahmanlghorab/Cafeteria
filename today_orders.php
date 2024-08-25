@@ -31,6 +31,7 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         }
         .navbar {
             background-color: #d4a373;
+            margin-bottom: 20px;
         }
         .navbar-nav .nav-link {
             color: #fff;
@@ -52,9 +53,6 @@ $orders = $stmt->fetchAll(PDO::FETCH_ASSOC);
         .navbar-brand {
             font-weight: bold;
             color: #fff;
-        }
-        .container {
-            margin-top: 20px;
         }
         h1 {
             font-size: 2rem;
