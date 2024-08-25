@@ -14,13 +14,17 @@ try {
 }
 session_start();
 
-$user_id = $_SESSION['user_id']?$_SESSION['user_id']:'';
- if(empty($user_id)){
-    header("location:login.php");
+if (!isset($_SESSION['user_id']) || empty($_SESSION['user_id'])) {
+    header("Location: login.php");
+    exit();
 }
-$role= $_SESSION['role']?$_SESSION['role']:'';
-if($role!=2){
-    header("location:add_user_order.php");
+
+$user_id = $_SESSION['user_id'];
+$role = $_SESSION['role'] ?? '';
+
+if ($role != 2) {
+    header("Location: add_user_order.php");
+    exit();
 }
 
 $query = "SELECT user_name, image FROM users WHERE user_id = :user_id";
